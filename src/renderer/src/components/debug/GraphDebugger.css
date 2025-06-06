@@ -1,0 +1,7 @@
+.my_debug_buttons button {
+  text-transform: none;
+}
+
+.my_debug_buttons button ~ button {
+  margin-left: 5px;
+}

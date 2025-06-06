@@ -1,0 +1,12 @@
+.message-item {
+  display: flex;
+  flex-direction: row;
+}
+
+.message-item .message-role {
+  padding: 2px;
+}
+
+.message-item .message-content {
+  padding: 2px;
+}

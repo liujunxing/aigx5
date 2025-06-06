@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* custom.css */
+.reset-button {
+  all: revert; /* 恢复元素的所有属性到默认值 */
+}
