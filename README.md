@@ -11,6 +11,9 @@ An Electron application with React and TypeScript
 
 ### Install
 
+推荐使用 pnpm 包管理器.
+
+
 ```bash
 $ npm install
 ```
@@ -33,3 +36,11 @@ $ npm run build:mac
 # For Linux
 $ npm run build:linux
 ```
+
+# todo: 已经实现的功能
+
+# 正在做/待做功能 
+
+[ ] 生成三角形的提示词, 函数等支持;
+[ ] 记忆体的生成/更新;
+

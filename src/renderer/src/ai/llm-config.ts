@@ -1,6 +1,6 @@
-import { addConfigChangeListener } from "@renderer/config/config-change-notify";
+import type { LLMConfig } from "@shared/config-type";
 import { DesktopPlatform } from "@renderer/utils/platform";
-import { LLMConfig } from "@shared/config-type";
+import { addConfigChangeListener } from "@renderer/config/config-change-notify";
 
 
 // LLM 的配置信息.

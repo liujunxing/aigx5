@@ -9,16 +9,10 @@ import { ConfigDialog } from './config';
 import { configOpenedAtom } from "./app-atoms";
 import { useAtom } from 'jotai';
 
-import { _test_3, _test_4 } from "./_tmp/memo2"
-
 export function App() {
   const [app, setApp] = useState('graph');
   // 改用 atom
   const [configOpened, setConfigOpened] = useAtom(configOpenedAtom);
-
-  const test_memo = () => {
-    _test_4();
-  };
 
   return (
     <div className="flex flex-col">

@@ -1,12 +1,13 @@
 import { useRef, useMemo } from "react";
 import { Button, Input, Typography } from "@mui/material";
+import { useSetAtom } from "jotai";
 import { useSketchpadStore } from "@renderer/store/SketchpadProvider";
 import { BoardHelper } from "@renderer/utils/BoardHelper";
-import "./GraphDebugger.css";
 import { DesktopPlatform } from "@renderer/utils/platform";
-import { useSetAtom } from "jotai";
 import { configOpenedAtom } from "@renderer/app-atoms";
+import "./GraphDebugger.css";
 
+import { _test_tool1 } from "@renderer/test/tool3";
 
 export function GraphDebugger() {
   const setConfigAtom = useSetAtom(configOpenedAtom);
@@ -232,13 +233,18 @@ export function GraphDebugger() {
     // const dp = new DesktopPlatform();
     // const configs = await dp.getConfigs();
     // console.info(`configs: `, configs);
-  }
+  };
+
+  const test_tool = async () => {
+    _test_tool1();
+  };
 
   return (
     <>
       <Typography variant="h5">Graph Function Debug</Typography>
       <div className="my_debug_buttons">
-        <Button variant="outlined" onClick={open_configs}>配 置</Button>
+        <Button variant="contained" onClick={test_tool}>测试工具</Button>
+        <Button variant="outlined" onClick={open_configs}>配置</Button>
         <Button variant="outlined" onClick={clear_canvas}>清空画板</Button>
         {/* <Button variant="outlined" onClick={create_point}>create point</Button> */}
         {/* <Button variant="outlined" onClick={create_midpoint}>create midpoint (A,B)</Button> */}

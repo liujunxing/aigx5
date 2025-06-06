@@ -95,8 +95,8 @@ async function process_submit(input: string, { ai, aiStore, board, oldMessages, 
       _request_id?: string | null;
     };
   
-    // 开发阶段: 限定最多 5 轮调用....
-    for (let i = 0; i < 5; i++) {
+    // 开发阶段: 限定最多 10 轮调用....
+    for (let i = 0; i < 10; i++) {
       // 组装本轮请求的消息列表:
       console.info(`>>> messages(round ${i}): `, _copy(messages));
 

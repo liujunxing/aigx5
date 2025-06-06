@@ -15,14 +15,9 @@ export function MessagesList() {
   const [messages, _setMessages] = useAtom(store.messages);
 
   return (
-    <>
-      {/* Chat messages will go here */}
-      <div style={{ border: '1px solid red', width: '100%', minHeight: '50px', backgroundColor: 'thistle' }}>
-        {
-          messages.map(msg => <MessageItem key={msg.id} item={msg} />)
-        }
-      </div>
-    </>
+    <div className="messages-list">
+      {messages.map(item => <MessageItem key={item.id} item={item} />)}
+    </div>
   )
 }
 
