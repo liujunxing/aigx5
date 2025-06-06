@@ -1,3 +1,16 @@
+# 介绍
+
+# 已实现功能
+- 创建点
+- 创建线段
+- 创建圆
+  
+
+# 待实现功能
+- 平行四边形
+- 
+
+
 # electron-app
 
 An Electron application with React and TypeScript
