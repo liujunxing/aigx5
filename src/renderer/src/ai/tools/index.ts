@@ -93,7 +93,7 @@ const create_midpoint: OpenAI.ChatCompletionTool = {
           required: [],
         },
       },
-      required: ['x', 'y']
+      required: ['A', 'B']
     },
   }
 };
@@ -425,6 +425,25 @@ const delete_segment: OpenAI.ChatCompletionTool = {
 };
 
 
+// 获得绘制特定几何图形的更多提示信息.
+const shape_prompt: OpenAI.ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'shape_prompt',
+    description: '当用户想作一个几何图形, 但没有给出具体的点坐标时, 使用此工具获取更详细的提示信息.',
+    parameters: {
+      type: 'object',
+      properties: {
+        shape: {
+          type: 'string',
+          description: `几何图形的名称, 如 "triangle", "平行四边形", "rectangle"  等.`
+        }
+      },
+      required: ['shape']
+    }
+  }
+};
+
 /** 导出可用的几何的 function-tool */
 export const GeoTools: OpenAI.ChatCompletionTool[] = [
   get_point_number,
@@ -449,5 +468,7 @@ export const GeoTools: OpenAI.ChatCompletionTool[] = [
 
   delete_point,
   delete_segment,
+
+  shape_prompt,
 
 ];

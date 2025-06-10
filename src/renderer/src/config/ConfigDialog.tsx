@@ -2,7 +2,7 @@ import { useState, useEffect, memo } from "react";
 import { useAtom } from "jotai";
 import { Dialog, DialogTitle, DialogContent, Box, Typography, Button, Tabs, Tab, DialogActions } from "@mui/material";
 
-import { configOpenedAtom } from "../app-atoms";
+import { configOpenedAtom } from "../store/app-atoms";
 import { configAtom } from "./ConfigValue";
 import { AgentTab } from "./AgentTab";
 import { PromptTab } from "./PromptTab";

@@ -36,56 +36,59 @@ export class ToolCaller {
         return JSON.stringify({ point_number });
       }
       case 'create_point': { 
-        return this.create_point(args);
+        return this._create_point(args);
       }
       case 'create_midpoint': {
-        return this.create_midpoint(args); 
+        return this._create_midpoint(args); 
       }
       case 'create_segment': {
-        return this.create_segment(args);
+        return this._create_segment(args);
       }
       case 'create_line': { 
-        return this.create_line(args);
+        return this._create_line(args);
       }
       case 'create_ray': {
-        return this.create_ray(args);
+        return this._create_ray(args);
       }
       case 'create_parallel': {
-        return this.create_parallel(args);
+        return this._create_parallel(args);
       }
       case 'create_perpendicular': {
-        return this.create_perpendicular(args);
+        return this._create_perpendicular(args);
       }
       case 'create_bisector': {
-        return this.create_bisector(args);
+        return this._create_bisector(args);
       }  
       case 'create_glider': {
-        return this.create_glider(args);
+        return this._create_glider(args);
       }
       case 'split_point2': {
-        return this.split_point2(args);
+        return this._split_point2(args);
       }
       case 'split_point3': {
-        return this.split_point3(args);
+        return this._split_point3(args);
       }
       case 'create_circle': {
-        return this.create_circle(args);
+        return this._create_circle(args);
       }
       case 'create_intersection': {
-        return this.create_intersection(args);
+        return this._create_intersection(args);
       }
       case 'delete_segment': { 
-        return this.delete_segment(args);
+        return this._delete_segment(args);
       }
       case 'delete_point': {
-        return this.delete_point(args);
+        return this._delete_point(args);
+      }
+      case 'shape_prompt': {
+        return this._shape_prompt(args);
       }
       default:
         throw new Error(`试图调用未知函数: '${name}'.`)
     }
   }
 
-  private create_point(args: any) {
+  private _create_point(args: any) {
     const { name = '', x, y, opt = {} } = args as { name?: string, x: number, y: number, opt?: any };
     const pt = this.helper.create_free_point(x, y, { ...opt, name });
     const resp = {
@@ -95,7 +98,7 @@ export class ToolCaller {
     return JSON.stringify(resp);
   }
 
-  private create_midpoint(args: any) {
+  private _create_midpoint(args: any) {
     const { name = '', A, B, opt = {} } = args as { name?: string, A: string, B: string, opt?: any };
     const nopt = { ...opt };
     if (name) { nopt.name = name; }
@@ -108,7 +111,7 @@ export class ToolCaller {
     return JSON.stringify(resp);
   }
 
-  private create_segment(args: any) {
+  private _create_segment(args: any) {
     const { A, B } = args as { A: string, B: string };
     const seg = this.helper.create_segment(A, B);
     const pA = { name: A, x: seg.point1.X(), y: seg.point1.Y() };
@@ -122,7 +125,7 @@ export class ToolCaller {
     return JSON.stringify(resp);
   }
   
-  private create_line(args: any) {
+  private _create_line(args: any) {
     const { A, B } = args as { A: string, B: string };
     const ln = this.helper.create_line(A, B, {});
     const pA = { name: A, x: ln.point1.X(), y: ln.point1.Y() };
@@ -136,7 +139,7 @@ export class ToolCaller {
     return JSON.stringify(resp);
   }
 
-  private create_ray(args: any) {
+  private _create_ray(args: any) {
     const { A, B } = args as { A: string, B: string };
     const ln = this.helper.create_ray(A, B, {});
     const pA = { name: A, x: ln.point1.X(), y: ln.point1.Y() };
@@ -150,7 +153,7 @@ export class ToolCaller {
     return JSON.stringify(resp);
   }
 
-  private create_parallel(args: any) {
+  private _create_parallel(args: any) {
     const { point, line } = args as { point: string, line: string };
 
     const dat = this.helper.create_parallel_ex(point, line, {});
@@ -172,7 +175,7 @@ export class ToolCaller {
     }
   }
 
-  private create_perpendicular(args: any) { 
+  private _create_perpendicular(args: any) { 
     const { point, line } = args as { point: string, line: string };
 
     const tn = this.helper.create_perpendicular(point, line, {});
@@ -192,7 +195,7 @@ export class ToolCaller {
     }
   }
 
-  private create_bisector(args: any) {
+  private _create_bisector(args: any) {
     const { O, A, B } = args as { O: string, A: string, B: string };
     const bn = this.helper.create_bisector(O, A, B, {});
     const resp = {
@@ -203,7 +206,7 @@ export class ToolCaller {
     return JSON.stringify(resp);
   }
 
-  private create_glider(args: any) {
+  private _create_glider(args: any) {
     const { ln, x = 0, y = 0, opt = {} } = args as { ln: string, x?: number, y?: number, opt?: any };
     const dat = this.helper.create_glider(ln, x, y, opt);
     if (dat.result) {
@@ -222,7 +225,7 @@ export class ToolCaller {
     }
   }
      
-  private split_point2(args: any) {
+  private _split_point2(args: any) {
     const { name } = args as { name: string };
     const points = this.helper.split_point2(name);
     if (!points) return JSON.stringify({ result: 'Error', description: '未找到可组成名字的点对' });
@@ -239,7 +242,7 @@ export class ToolCaller {
     return JSON.stringify(resp);
   }
   
-  private split_point3(args: any) {
+  private _split_point3(args: any) {
     const { name } = args as { name: string };
     const points = this.helper.split_point3(name);
     if (!points || !points.length) return JSON.stringify({ result: 'Error', description: '未找到可组成名字的点对' });
@@ -252,7 +255,7 @@ export class ToolCaller {
     return JSON.stringify(resp);
   }
   
-  private create_circle(args: any) {
+  private _create_circle(args: any) {
     const { O, A, B, C, r, s } = args as { O?: string, A?: string, B?: string, C?: string, r?: string, s?: string };
 
     let circle: JXG.Circle | null = null;
@@ -282,7 +285,7 @@ export class ToolCaller {
     return JSON.stringify(resp);
   }
 
-  private create_intersection(args: any) {
+  private _create_intersection(args: any) {
     const { ln1, ln2 } = args as { ln1: string, ln2: string };
     const xpt = this.helper.create_intersection1(ln1, ln2, {});
     if (!xpt) { throw new Error(`未能创建交点`) }
@@ -296,7 +299,7 @@ export class ToolCaller {
   }
 
 
-  private delete_segment(args: any) {
+  private _delete_segment(args: any) {
     const { name } = args as { name: string };
     const dat = this.helper.delete_segment(name);
 
@@ -314,7 +317,7 @@ export class ToolCaller {
     }
   }
 
-  private delete_point(args: any) { 
+  private _delete_point(args: any) { 
     const { name } = args as { name: string };
     const dat = this.helper.delete_point(name);
 
@@ -331,5 +334,31 @@ export class ToolCaller {
       });
     }
   }
+
+  // 现在暂时不使用 shape 参数
+  private _shape_prompt(_args: any) {
+    const pts = tri_points.map(pp => {
+      const pn = (i: number) => +((pp[i] + rnd3(-0.1, 0.1)).toFixed(3));
+      return `* (${pn(0)}, ${pn(1)}), (${pn(2)}, ${pn(3)}), (${pn(4)}, ${pn(5)}) .`;
+    }).join('\n');
+
+    const str = `建议使用以下推荐的坐标点来创建三角形, 可随机选择其中的一组:\n\n` +
+      `${pts}` +
+      `\n`;
+
+    return str;
+  }
   
+}
+
+const tri_points = [
+  // [0, 0, 10, 0, 4, 7],
+  [-4.51, 9.20, -8.53, -6.41, 16.04, -6.43],  // 三角形三个顶点的坐标.
+  [4.77, 8.72, -5.87, -3.37, 11.77, -3.64],
+];
+
+// 生成一个指定范围内的随机数, 只保留3位有效数字. 
+function rnd3(min: number, max: number) {
+  const num = Math.random() * (max - min) + min;
+  return Math.round(num * 1000) / 1000; // 保留3位有效数字
 }

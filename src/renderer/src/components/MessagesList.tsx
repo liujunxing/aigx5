@@ -15,7 +15,7 @@ export function MessagesList() {
   const [messages, _setMessages] = useAtom(store.messages);
 
   return (
-    <div className="messages-list">
+    <div className="message-list">
       {messages.map(item => <MessageItem key={item.id} item={item} />)}
     </div>
   )
@@ -26,10 +26,19 @@ interface MessageItem_Props {
   item: MessageItemType;
 }
 
+function roleName(role: string) {
+  switch (role) {
+    case "user": return "我";
+    case "assistant": return "AI";
+    case "system": return "系统";
+    default: return "未知";
+  }
+}
+
 export function MessageItem({ item }: MessageItem_Props) {
   return (
     <div className="message-item" data-id={item.id}>
-      <div className="message-role">{item.role}: </div>
+      <div className="message-role">{roleName(item.role)}: </div>
       <div className="message-content">{item.content}</div>
     </div>
   )

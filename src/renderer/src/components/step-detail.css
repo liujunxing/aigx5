@@ -1,0 +1,13 @@
+.step-detail {
+  padding-left: 8px;  
+  font-size: 0.8rem;
+}
+
+
+.step-detail div {
+  border-bottom: 1px solid lightgray;
+}
+
+.step-detail div:nth-child(odd) {
+  background-color: #e5f5e5;
+}

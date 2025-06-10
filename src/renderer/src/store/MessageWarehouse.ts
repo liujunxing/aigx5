@@ -24,6 +24,10 @@ export class MessageWarehouse extends CustomEventEmitter<Events> {
     prompt: 0,
     completion: 0,
   });
+
+  // 一次执行的详细工具调用步骤.
+  public readonly steps = atom<any[]>([]);
+
 }
 
 export namespace MessageWarehouse {

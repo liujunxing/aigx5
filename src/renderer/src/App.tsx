@@ -6,7 +6,7 @@ import { GraphApp } from "./GraphApp";
 import { FabricApp } from "./FabricApp";
 import { ConfigDialog } from './config';
 
-import { configOpenedAtom } from "./app-atoms";
+import { configOpenedAtom } from "./store/app-atoms";
 import { useAtom } from 'jotai';
 
 export function App() {

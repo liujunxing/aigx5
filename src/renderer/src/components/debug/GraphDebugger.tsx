@@ -4,7 +4,7 @@ import { useSetAtom } from "jotai";
 import { useSketchpadStore } from "@renderer/store/SketchpadProvider";
 import { BoardHelper } from "@renderer/utils/BoardHelper";
 import { DesktopPlatform } from "@renderer/utils/platform";
-import { configOpenedAtom } from "@renderer/app-atoms";
+import { configOpenedAtom } from "@renderer/store/app-atoms";
 import "./GraphDebugger.css";
 
 import { _test_tool1 } from "@renderer/test/tool3";
