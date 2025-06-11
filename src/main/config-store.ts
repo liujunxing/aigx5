@@ -11,6 +11,7 @@ export const store = new Store<StoreType>({
       hello: 'hello, aigx5!'
     },
     llm: {
+      current: 'doubao',
       doubao: {
         url: 'https://ark.cn-beijing.volces.com/api/v3',
         apiKey: '',           // 需要用户给出
@@ -20,7 +21,12 @@ export const store = new Store<StoreType>({
         url: 'https://ark.cn-beijing.volces.com/api/v3',
         apiKey: '',           // 需要用户给出
         model: '',            // 需要用户给出
-      }
+      },
+      qwen: {
+        url: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+        apiKey: '',           // 需要用户给出
+        model: '',            // 需要用户给出
+      },
     },
   }
 });

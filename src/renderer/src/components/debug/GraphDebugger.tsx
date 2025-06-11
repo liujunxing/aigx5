@@ -1,4 +1,5 @@
 import { useRef, useMemo } from "react";
+import OpenAI from "openai";
 import { Button, Input, Typography } from "@mui/material";
 import { useSetAtom } from "jotai";
 import { useSketchpadStore } from "@renderer/store/SketchpadProvider";
@@ -238,14 +239,19 @@ export function GraphDebugger() {
   const test_tool = async () => {
     _test_tool1();
   };
+  
+  const test_qwen = () => {
+    _do_test_qwen();
+  };
 
   return (
     <>
       <Typography variant="h5">Graph Function Debug</Typography>
       <div className="my_debug_buttons">
         <Button variant="contained" onClick={test_tool}>测试工具</Button>
-        <Button variant="outlined" onClick={open_configs}>配置</Button>
+        {/* <Button variant="outlined" onClick={open_configs}>配置</Button> */}
         <Button variant="outlined" onClick={clear_canvas}>清空画板</Button>
+        {/* <Button variant="outlined" onClick={test_qwen}>Qwen</Button> */}
         {/* <Button variant="outlined" onClick={create_point}>create point</Button> */}
         {/* <Button variant="outlined" onClick={create_midpoint}>create midpoint (A,B)</Button> */}
         {/* <Button variant="outlined" onClick={get_point_number}>get point number</Button>  */}
@@ -277,4 +283,30 @@ export function GraphDebugger() {
       </div>
     </>
   );
+}
+
+
+async function _do_test_qwen() {
+  console.info(`_do_test_qwen: `);
+
+  const API_KEY = 'sk-fba7204ee1424421835bc049700fbc6b';
+  const BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1";
+  const QW_MODEL = 'qwen-max-latest';
+
+  const openai = new OpenAI({
+    apiKey: API_KEY,
+    baseURL: BASE_URL,
+    dangerouslyAllowBrowser: true,
+  });
+
+  const resp = await openai.chat.completions.create({
+    // 模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
+    model: QW_MODEL,
+    messages: [
+      { role: "system", content: "You are a helpful assistant." },
+      { role: "user", content: "你是谁？" }
+    ],
+  });
+
+  console.log(resp);
 }

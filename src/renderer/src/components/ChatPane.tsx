@@ -108,7 +108,8 @@ async function process_submit(input: string, { ai, aiStore, board, oldMessages, 
 
       const finishReason = result?.choices[0]?.finish_reason;
       if (finishReason === 'stop') {
-        steps.push(`调用结束, 结果:` + result?.choices?.[0]?.message?.content);
+        const elapse2 = new Date().getTime() - start_time.getTime();
+        steps.push(`[${elapse2}ms] 调用结束, 结果:` + result?.choices?.[0]?.message?.content);
         setSteps(_copy(steps));
         break;
       }
@@ -128,6 +129,7 @@ async function process_submit(input: string, { ai, aiStore, board, oldMessages, 
         }
 
         // 实现调用工具多次.
+        let has_time = false;
         for (const tcall of toolCalls) { 
           const name = tcall.function.name;
           const args = tcall.function.arguments;
@@ -140,7 +142,14 @@ async function process_submit(input: string, { ai, aiStore, board, oldMessages, 
           };
 
           const elapse = new Date().getTime() - start_time.getTime();
-          steps.push(`[${elapse.toFixed(0)}ms] 调用工具 ${name}(${args}) 返回: ${fun_res}`);
+          if (has_time) {
+            steps.push(`* 调用工具 ${name}(${args}) 返回: ${fun_res}`);
+          }
+          else {
+            steps.push(`[${elapse.toFixed(0)}ms] 调用工具 ${name}(${args}) 返回: ${fun_res}`);
+          }
+          
+          has_time = true;
           setSteps(_copy(steps));
           await pause0();  // 暂停一下, 以确保 UI 更新.
 
@@ -169,9 +178,9 @@ async function process_submit(input: string, { ai, aiStore, board, oldMessages, 
     setTokenUsage(_copy(usage));
 
     // 总计时:
-    const end_time = new Date();
-    const elapse2 = end_time.getTime() - start_time.getTime();
-    steps.push(`调用结束, 总耗时: ${elapse2.toFixed(0)}ms`);
+    // const end_time = new Date();
+    // const elapse2 = end_time.getTime() - start_time.getTime();
+    // steps.push(`调用结束, 总耗时: ${elapse2.toFixed(0)}ms`);
     setSteps(_copy(steps));
   }
   catch (err) {
