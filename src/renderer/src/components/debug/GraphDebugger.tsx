@@ -8,7 +8,8 @@ import { DesktopPlatform } from "@renderer/utils/platform";
 import { configOpenedAtom } from "@renderer/store/app-atoms";
 import "./GraphDebugger.css";
 
-import { _test_tool1 } from "@renderer/test/tool3";
+// import { _test_tool0 } from "../../_tmp/isotri5";
+function _test_tool0() { }
 
 export function GraphDebugger() {
   const setConfigAtom = useSetAtom(configOpenedAtom);
@@ -237,12 +238,9 @@ export function GraphDebugger() {
   };
 
   const test_tool = async () => {
-    _test_tool1();
+    _test_tool0();    
   };
   
-  const test_qwen = () => {
-    _do_test_qwen();
-  };
 
   return (
     <>
@@ -283,30 +281,4 @@ export function GraphDebugger() {
       </div>
     </>
   );
-}
-
-
-async function _do_test_qwen() {
-  console.info(`_do_test_qwen: `);
-
-  const API_KEY = 'sk-fba7204ee1424421835bc049700fbc6b';
-  const BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1";
-  const QW_MODEL = 'qwen-max-latest';
-
-  const openai = new OpenAI({
-    apiKey: API_KEY,
-    baseURL: BASE_URL,
-    dangerouslyAllowBrowser: true,
-  });
-
-  const resp = await openai.chat.completions.create({
-    // 模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
-    model: QW_MODEL,
-    messages: [
-      { role: "system", content: "You are a helpful assistant." },
-      { role: "user", content: "你是谁？" }
-    ],
-  });
-
-  console.log(resp);
 }

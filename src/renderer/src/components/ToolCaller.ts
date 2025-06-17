@@ -1,8 +1,13 @@
-import { Board } from "jsxgraph";
+import type { Board, Point, Segment } from "jsxgraph";
 import { MessageWarehouse } from "@renderer/store/MessageWarehouse";
 import { BoardHelper } from "@renderer/utils/BoardHelper";
+import { get_isotri_prompt } from "@renderer/prompts/isotri-prompt";
+import { get_parallel_quadrangle_prompt } from "@renderer/prompts/parallel-quadrangle-prompt";
 
 
+/**
+ * 辅助实现 function-tool 的调用.
+ */
 export class ToolCaller {
   public readonly helper: BoardHelper;
   public constructor(
@@ -82,6 +87,16 @@ export class ToolCaller {
       }
       case 'shape_prompt': {
         return this._shape_prompt(args);
+      }
+      // 暂取消
+      // case 'create_special_triangle': {
+      //   return this._create_special_triangle(args);
+      // }
+      case 'create_isotri_apex': {
+        return this._create_isotri_apex(args);
+      }
+      case 'create_parallelogram': {
+        return this._create_parallelogram(args);
       }
       default:
         throw new Error(`试图调用未知函数: '${name}'.`)
@@ -342,13 +357,66 @@ export class ToolCaller {
       return `* (${pn(0)}, ${pn(1)}), (${pn(2)}, ${pn(3)}), (${pn(4)}, ${pn(5)}) .`;
     }).join('\n');
 
-    const str = `建议使用以下推荐的坐标点来创建三角形, 可随机选择其中的一组:\n\n` +
-      `${pts}` +
-      `\n`;
+    // 普通三角形
+    const prompt1 = `
+## 创建普通三角形 
+建议使用以下推荐的坐标点来创建三角形, 可随机选择其中的一组:
+  ${pts}
 
-    return str;
+`;
+    
+    // 等腰三角形
+    const prompt2 = get_isotri_prompt();
+    
+    // 平行四边形:
+    const prompt3 = get_parallel_quadrangle_prompt();
+
+    return prompt1 + prompt2 + prompt3;
   }
   
+  private _create_special_triangle(_args: any) {
+    console.info(`create_special_triangle: `, _args);
+    throw new Error('Not implemented.');
+  }
+
+  private _create_isotri_apex(_args: any) {
+    console.info(`create_isotri_apex: `, _args);
+    const p1 = _args.p1 as string,
+      p2 = _args.p2 as string,
+      p3 = _args.p3 as string,
+      hr = _args.hr as number;
+    
+    // 找到底边两点 B=p2, C=p3
+    const B = this.helper.query_point(p2),
+      C = this.helper.query_point(p3);
+    
+    // 找到底边:
+    const BC = this.helper.query_segment(B.name, C.name);
+
+    const { A } = this.helper._create_isotri_apex(B, C, BC, p1, hr);
+
+    return `创建顶点成功: ${A.name}`;
+  }
+
+  private _create_parallelogram(_args: any) {
+    console.info(`create_parallelogram: `, _args);
+    const p1 = _args.p1 as string,
+      p2 = _args.p2 as string,
+      p3 = _args.p3 as string,
+      p4 = _args.p4 as string;
+
+    // 先找到 p1=A,p2=B,p3=C
+    const A = this.helper.query_point(p1),
+      B = this.helper.query_point(p2),
+      C = this.helper.query_point(p3);
+    
+    // 创建点 D
+    const D = this.helper.board.create('parallelpoint', [A, B, C], { name: p4 });
+    
+
+    return `创建点成功: ${p4}`;
+  }
+
 }
 
 const tri_points = [

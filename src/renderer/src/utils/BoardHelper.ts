@@ -1,4 +1,4 @@
-import type { Board } from "jsxgraph";
+import type { Board, Point, Segment } from "jsxgraph";
 
 declare module "jsxgraph" {
   interface GeometryElement {
@@ -390,7 +390,6 @@ export class BoardHelper {
     return nopt;
   }
 
-
   /** 尝试分解 names 为多个点, 如 'ABC' 分解为 [A, B, C]. 如果不能分解则返回 null. */
   public try_parse_points(names: string) {
     // 现在先使用简单算法, 最左匹配吧.
@@ -403,6 +402,36 @@ export class BoardHelper {
     // 
 
 
+  }
+
+
+  public query_point(name: string): JXG.Point { 
+    const pt = this.board.elementsByName[name];
+    if (!pt) return null;
+
+    if (pt._org_type !== OBJECT_TYPE_POINT) return null;
+    return pt as JXG.Point;
+  }
+  
+  public _create_isotri_apex(B: Point, C: Point, BC: Segment, p1: string, hr: number) {
+    // 求 BC 的中点 'M', 得到其位置.
+    const M = this.board.create('midpoint', [B, C], { name: '', visible: false });
+    const Mc = [M.coords.usrCoords[1], M.coords.usrCoords[2]];
+
+    // 过 'M' 作 BC 的垂线.
+    const tn = this.board.create('perpendicular', [M, BC], { name: '', visible: false });
+
+    // 计算一个合适的顶点位置:
+    const Bc = [B.coords.usrCoords[1], B.coords.usrCoords[2]];
+    const Cc = [C.coords.usrCoords[1], C.coords.usrCoords[2]];
+    const v = [Bc[0] - Cc[0], Bc[1] - Cc[1]];
+    const vlen = Math.sqrt(v[0] * v[0] + v[1] * v[1]);
+    v[0] /= vlen; v[1] /= vlen;   // 底边的单位向量
+
+    const Pc = [Mc[0] + v[1] * hr*vlen, Mc[1] - v[0] * hr*vlen];
+    const A = this.board.create('glider', [Pc[0], Pc[1], tn], { name: p1 });
+
+    return { A, M, tn };
   }
 
 }

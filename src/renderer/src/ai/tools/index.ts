@@ -444,6 +444,61 @@ const shape_prompt: OpenAI.ChatCompletionTool = {
   }
 };
 
+// 创建特殊三角形: 等腰,等边,直角,等腰直角 等.
+const create_special_triangle: OpenAI.ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'create_special_triangle',
+    description: '创建特殊三角形: 等腰,等边,直角,等腰直角 等三角形. 根据 detail_prompts 提供的额外指导信息进行调用.',
+    parameters: {
+      type: 'object',
+      properties: {
+        type: { type: 'string', description: '特殊三角形的类型' },
+        p1: { type: 'string', description: '三角形的一个顶点' },
+        p2: { type: 'string', description: '三角形的另一个顶点' },
+        h: { type: 'number', description: '三角形的高度' }
+      },
+      required: ['type']
+    },
+  }
+};
+
+// 根据底边两个顶点和高度比, 创建等腰三角形的顶点(apex):
+const create_isotri_apex: OpenAI.ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'create_isotri_apex',
+    description: '根据底边两个顶点和高度比, 创建等腰三角形的顶点(apex). 根据 detail_prompts 提供的额外指导信息进行调用.',
+    parameters: {
+      type: 'object',
+      properties: {
+        p1: { type: 'string', description: '顶点(apex)的名字' },
+        p2: { type: 'string', description: '底边顶点1' },
+        p3: { type: 'string', description: '底边顶点2' },
+        hr: { type: 'number', description: '高度与底边长度的比, 一般取 1.05~1.2 之间的数' },
+      }
+    }
+  }
+};
+
+// 创建平行四边形第4个顶点
+const create_parallelogram: OpenAI.ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'create_parallelogram',
+    description: '创建平行四边形. 根据 detail_prompts 提供的额外指导信息进行调用.',
+    parameters: {
+      type: 'object',
+      properties: {
+        p1: { type: 'string', description: '四边形的顶点1' },
+        p2: { type: 'string', description: '四边形的顶点2' },
+        p3: { type: 'string', description: '四边形的顶点3' },
+        p4: { type: 'string', description: '四边形的顶点4 的名字' },
+      }
+    }
+  }
+};
+
 /** 导出可用的几何的 function-tool */
 export const GeoTools: OpenAI.ChatCompletionTool[] = [
   get_point_number,
@@ -470,5 +525,8 @@ export const GeoTools: OpenAI.ChatCompletionTool[] = [
   delete_segment,
 
   shape_prompt,
+  // create_special_triangle,
+  create_isotri_apex,
+  create_parallelogram,
 
 ];
