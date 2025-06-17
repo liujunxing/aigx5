@@ -1,7 +1,9 @@
+// @ts-nocheck
 import type { Board, Point, Segment } from "jsxgraph";
 import { MessageWarehouse } from "@renderer/store/MessageWarehouse";
 import { BoardHelper } from "@renderer/utils/BoardHelper";
 import { get_isotri_prompt } from "@renderer/prompts/isotri-prompt";
+import { get_eqltri_prompt } from "@renderer/prompts/eqltri-prompt";
 import { get_parallel_quadrangle_prompt } from "@renderer/prompts/parallel-quadrangle-prompt";
 
 
@@ -94,6 +96,9 @@ export class ToolCaller {
       // }
       case 'create_isotri_apex': {
         return this._create_isotri_apex(args);
+      }
+      case 'create_eqltri_apex': {
+        return this._create_eqltri_apex(args);
       }
       case 'create_parallelogram': {
         return this._create_parallelogram(args);
@@ -367,11 +372,13 @@ export class ToolCaller {
     
     // 等腰三角形
     const prompt2 = get_isotri_prompt();
+    // 等边三角形
+    const prompt2a = get_eqltri_prompt();
     
     // 平行四边形:
     const prompt3 = get_parallel_quadrangle_prompt();
 
-    return prompt1 + prompt2 + prompt3;
+    return prompt1 + prompt2 + prompt2a + prompt3;
   }
   
   private _create_special_triangle(_args: any) {
@@ -393,9 +400,23 @@ export class ToolCaller {
     // 找到底边:
     const BC = this.helper.query_segment(B.name, C.name);
 
-    const { A } = this.helper._create_isotri_apex(B, C, BC, p1, hr);
+    // 创建顶点
+    const _ = this.helper._create_isotri_apex(B, C, BC, p1, hr);
 
-    return `创建顶点成功: ${A.name}`;
+    return `创建顶点成功: ${p1}`;
+  }
+
+  private _create_eqltri_apex(_args: any) {
+    console.info('create_eqltri_apex: ', _args);
+    const p1 = _args.p1 as string,
+      p2 = _args.p2 as string,
+      p3 = _args.p3 as string;
+    
+    const B = this.helper.query_point(p2),
+      C = this.helper.query_point(p3);
+    
+    const _ = this.helper._create_eqltri_apex(B, C, p1);
+    return `创建成功`;
   }
 
   private _create_parallelogram(_args: any) {

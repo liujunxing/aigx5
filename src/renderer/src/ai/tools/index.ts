@@ -472,11 +472,30 @@ const create_isotri_apex: OpenAI.ChatCompletionTool = {
     parameters: {
       type: 'object',
       properties: {
-        p1: { type: 'string', description: '顶点(apex)的名字' },
-        p2: { type: 'string', description: '底边顶点1' },
-        p3: { type: 'string', description: '底边顶点2' },
+        p1: { type: 'string', description: '顶点1(apex)的名字' },
+        p2: { type: 'string', description: '顶点2' },
+        p3: { type: 'string', description: '顶点3' },
         hr: { type: 'number', description: '高度与底边长度的比, 一般取 1.05~1.2 之间的数' },
-      }
+      },
+      required: ['p1', 'p2', 'p3']
+    }
+  }
+};
+
+// 根据底边两个点, 创建等边三角形的顶点(apex).
+const create_eqltri_apex: OpenAI.ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'create_eqltri_apex',
+    description: '创建等边三角形的顶点(apex). 根据 detail_prompts 提供的额外指导信息进行调用.',
+    parameters: {
+      type: 'object',
+      properties: {
+        p1: { type: 'string', description: '顶点1(apex)的名字' },
+        p2: { type: 'string', description: '顶点2' },
+        p3: { type: 'string', description: '顶点3' },
+      },
+      required: ['p1', 'p2', 'p3']
     }
   }
 };
@@ -527,6 +546,7 @@ export const GeoTools: OpenAI.ChatCompletionTool[] = [
   shape_prompt,
   // create_special_triangle,
   create_isotri_apex,
+  create_eqltri_apex,
   create_parallelogram,
 
 ];

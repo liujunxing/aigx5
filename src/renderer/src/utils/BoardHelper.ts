@@ -434,6 +434,18 @@ export class BoardHelper {
     return { A, M, tn };
   }
 
+  public _create_eqltri_apex(B: Point, C: Point, p1: string) {
+    // 以 B 为圆心, BC 为半径作圆
+    const c1 = this.board.create('circle', [B, C], { name: '', visible: true });
+    // 以 C 为圆心, BC 为半径作圆
+    const c2 = this.board.create('circle', [C, B], { name: '', visible: true });
+
+    // 创建 c1,c2 的交点, 选择子=1
+    const A = this.board.create('intersection', [c1, c2, 1], { name: p1, visible: true });
+
+    return { A, c1, c2 };
+  }
+
 }
 
 export namespace BoardHelper { 
