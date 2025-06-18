@@ -446,6 +446,31 @@ export class BoardHelper {
     return { A, c1, c2 };
   }
 
+  // b 给出 ∠B 的度数, 单位为 degree (当前取 50~59 的一个数)
+  public _create_rtri_apex(B: Point, C: Point, p1: string, b: number) {
+    const M = this.board.create('midpoint', [B, C], { name: '', visible: false });
+    const c1 = this.board.create('circle', [M, B], { name: '', visible: false });
+
+    const r1 = M.Dist(B);   // 圆的半径
+    const center = [M.coords.usrCoords[1], M.coords.usrCoords[2]];   // 圆心
+    const delta = [r1 * Math.cos(b * Math.PI / 90.0), r1 * Math.sin(b * Math.PI / 90.0)];
+    const aPos = [center[0] + delta[0], center[1] + delta[1]];
+
+    // 直角顶点 A.
+    const A = this.board.create('glider', [aPos[0], aPos[1], c1], { name: p1 });
+
+    var rAngle = this.board.create('angle', [B,A,C], {
+        strokeColor: 'black', fillColor: 'transparent', strokeWidth: 2,
+        radius: 1,
+        label: {
+          visible: false,
+        },
+        // point: {visible:false}
+      }
+    );
+    return { A, M, c1, rAngle };
+  }
+
 }
 
 export namespace BoardHelper { 

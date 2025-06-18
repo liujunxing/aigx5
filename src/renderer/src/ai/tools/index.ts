@@ -500,6 +500,25 @@ const create_eqltri_apex: OpenAI.ChatCompletionTool = {
   }
 };
 
+// 根据底边两个点, 创建直角三角形的顶点.
+const create_rtri_apex: OpenAI.ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'create_rtri_apex',
+    description: '创建直角三角形的顶点(apex). 根据 detail_prompts 提供的额外指导信息进行调用.',
+    parameters: {
+      type: 'object',
+      properties: {
+        p1: { type: 'string', description: '顶点1(apex)的名字' },
+        p2: { type: 'string', description: '顶点2' },
+        p3: { type: 'string', description: '顶点3' },
+        b: { type: 'number', description: '∠B 的大小, 建议取 50~59 的度数' },
+      },
+      required: ['p1', 'p2', 'p3', 'b']
+    }
+  }
+};
+
 // 创建平行四边形第4个顶点
 const create_parallelogram: OpenAI.ChatCompletionTool = {
   type: 'function',
@@ -517,6 +536,8 @@ const create_parallelogram: OpenAI.ChatCompletionTool = {
     }
   }
 };
+
+
 
 /** 导出可用的几何的 function-tool */
 export const GeoTools: OpenAI.ChatCompletionTool[] = [
@@ -547,6 +568,7 @@ export const GeoTools: OpenAI.ChatCompletionTool[] = [
   // create_special_triangle,
   create_isotri_apex,
   create_eqltri_apex,
+  create_rtri_apex,
   create_parallelogram,
 
 ];

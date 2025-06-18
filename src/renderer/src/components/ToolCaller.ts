@@ -5,6 +5,7 @@ import { BoardHelper } from "@renderer/utils/BoardHelper";
 import { get_isotri_prompt } from "@renderer/prompts/isotri-prompt";
 import { get_eqltri_prompt } from "@renderer/prompts/eqltri-prompt";
 import { get_parallel_quadrangle_prompt } from "@renderer/prompts/parallel-quadrangle-prompt";
+import { get_rtri_prompt } from "@renderer/prompts/rtri-prompt";
 
 
 /**
@@ -99,6 +100,9 @@ export class ToolCaller {
       }
       case 'create_eqltri_apex': {
         return this._create_eqltri_apex(args);
+      }
+      case 'create_rtri_apex': {
+        return this._create_rtri_apex(args);
       }
       case 'create_parallelogram': {
         return this._create_parallelogram(args);
@@ -374,11 +378,14 @@ export class ToolCaller {
     const prompt2 = get_isotri_prompt();
     // 等边三角形
     const prompt2a = get_eqltri_prompt();
+    // 直角三角形
+    const prompt2b = get_rtri_prompt();
+    const tri_prompts = prompt2 + prompt2a + prompt2b;
     
     // 平行四边形:
     const prompt3 = get_parallel_quadrangle_prompt();
 
-    return prompt1 + prompt2 + prompt2a + prompt3;
+    return prompt1 + tri_prompts + prompt3;
   }
   
   private _create_special_triangle(_args: any) {
@@ -416,6 +423,20 @@ export class ToolCaller {
       C = this.helper.query_point(p3);
     
     const _ = this.helper._create_eqltri_apex(B, C, p1);
+    return `创建成功`;
+  }
+
+  private _create_rtri_apex(_args: any) {
+    console.info('create_rtri_apex: ', _args);
+    const p1 = _args.p1 as string,  // @n A
+      p2 = _args.p2 as string,      // B
+      p3 = _args.p3 as string,      // C
+      b = _args.b as number ?? '52';    // ∠B 的大小
+    
+    const B = this.helper.query_point(p2),
+      C = this.helper.query_point(p3);
+    
+    const _ = this.helper._create_rtri_apex(B, C, p1, b);
     return `创建成功`;
   }
 
