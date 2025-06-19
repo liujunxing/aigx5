@@ -40,6 +40,7 @@
     - △ABD≌△ACD
     - ∴△ABD≌△ACD
   - 样式
+    -  markdown格式支持，Latex格式支持
     -   
 
 # 需实现的性能提升
