@@ -285,6 +285,11 @@ export class BoardHelper {
     return sg2 ?? null;
   }
 
+  // todo: 查询圆 
+  public query_circle(name: string) {
+    throw new Error('query_circle not implemented.');
+  }
+
   // 使用圆心和圆上一点创建圆:
   public create_circle1(O: string, A: string, opt: any = {}) {
     const nopt = this._apply_circle_name(opt);

@@ -7,6 +7,7 @@ import { BoardHelper } from "@renderer/utils/BoardHelper";
 import { DesktopPlatform } from "@renderer/utils/platform";
 import { configOpenedAtom } from "@renderer/store/app-atoms";
 import "./GraphDebugger.css";
+// import { TestRMD } from "./TestRMD";
 
 // import { _test_tool0 } from "../../_tmp/isotri5";
 function _test_tool0() { }
@@ -245,6 +246,10 @@ export function GraphDebugger() {
   return (
     <>
       <Typography variant="h5">Graph Function Debug</Typography>
+      <div>
+        {/* <TestRMD /> */}
+      </div>
+      
       <div className="my_debug_buttons">
         <Button variant="contained" onClick={test_tool}>测试工具</Button>
         {/* <Button variant="outlined" onClick={open_configs}>配置</Button> */}

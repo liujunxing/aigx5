@@ -21,7 +21,7 @@
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "electron-vite build && electron-builder --mac",
     "build:linux": "electron-vite build && electron-builder --linux",
-    "build:mac:x64":"electron-vite build && electron-builder --mac --x64"
+    "build:mac:x64": "electron-vite build && electron-builder --mac --x64"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",
@@ -57,6 +57,7 @@
     "react": "^19.1.0",
     "react-devtools": "^6.1.1",
     "react-dom": "^19.1.0",
+    "react-markdown": "^10.1.0",
     "react-split": "^2.0.14",
     "tailwindcss": "^4.1.4",
     "tsx": "^4.19.3",

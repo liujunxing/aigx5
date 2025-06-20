@@ -43,6 +43,9 @@ export class ToolCaller {
         const point_number = this.helper.get_point_number();
         return JSON.stringify({ point_number });
       }
+      case 'query_point_info': {
+        return this._query_point_info(args);
+      }
       case 'create_point': { 
         return this._create_point(args);
       }
@@ -107,9 +110,25 @@ export class ToolCaller {
       case 'create_parallelogram': {
         return this._create_parallelogram(args);
       }
+      
+      case 'specify_style_adjustee': {
+        return this._specify_style_adjustee(args);
+      }
+      case 'set_object_style': {
+        return this._set_object_style(args);
+      }
       default:
         throw new Error(`试图调用未知函数: '${name}'.`)
     }
+  }
+
+  private _query_point_info(_args: any) {
+    const name = _args.name as string ?? '';
+    const p = this.helper.query_point(name);
+    if (!p) {
+      return `未找到名为 '${name}' 的点.`;
+    }
+    return `点 '${name}' 的坐标为 (${p.X()}, ${p.Y()}).`;
   }
 
   private _create_point(args: any) {
@@ -459,7 +478,48 @@ export class ToolCaller {
     return `创建点成功: ${p4}`;
   }
 
+  private _specify_style_adjustee(_args: any) { 
+    const type = _args.type as string ?? '',
+      name = _args.name as string ?? '';
+
+    if (!type || !name) {
+      return `没有给出对象的名字或对象类型.`;
+    }
+
+    switch (type) {
+      case 'point':
+        current_adjustee = this.helper.query_point(name);
+        break;
+      case 'segment':
+        current_adjustee = this.helper.query_segment2(name, false);
+        break;
+      case 'circle':
+        current_adjustee = this.helper.query_circle(name);
+        break;
+      default:
+        return `不认识的对象类型 ${type}.`;
+    }
+
+    return `OK, 已设置当前待修改的对象为 ${current_adjustee.name}`;
+  }
+
+  private _set_object_style(_args: any) {
+    console.info(`set_object_style: `, _args);
+
+    const obj = current_adjustee;
+    if (!obj) {
+      return `没有设置当前待修改的对象, 一般您需要先指明想修改的对象类型和名字,引用.`;
+    }
+    
+    obj.setAttribute(_args);
+
+    return `OK`;
+  }
 }
+
+// 问题: 这个 tool-caller 每次都创建新的, 所以不能保存这个信息... 我们先放到全局吧...
+let current_adjustee: any = null;
+
 
 const tri_points = [
   // [0, 0, 10, 0, 4, 7],

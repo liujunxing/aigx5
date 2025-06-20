@@ -14,6 +14,22 @@ const get_point_number: OpenAI.ChatCompletionTool = {
   }
 };
 
+// 查询点的位置:
+const query_point_info: OpenAI.ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'query_point_info',   // 快速测试用 
+    description: '查询指定名字的点的信息, 含坐标等信息.',
+    parameters: {
+      type: 'object',
+      properties: {
+        name: { type: 'string', description: '点的名字' }
+      },
+      required: ['name']
+    }
+  }
+};
+
 // 创建自由点: create_point(x,y,?opt)
 const create_point: OpenAI.ChatCompletionTool = {
   type: 'function',
@@ -538,10 +554,64 @@ const create_parallelogram: OpenAI.ChatCompletionTool = {
 };
 
 
+// 可选: 获得当前待调整的对象. 一般其是最后创建的那个对象, 也可能没有.
+const get_current_adjustee: OpenAI.ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'get_current_adjustee',
+    description: '获得当前待调整的对象信息.',
+    parameters: {
+      type: 'object',
+      properties: {
+      },
+      required: [],
+    }
+  }
+};
+
+// 指定当前 待调整样式的对象.
+const specify_style_adjustee: OpenAI.ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'specify_style_adjustee',
+    description: `指定当前 即将/待/想 调整样式的对象. 可为下一步调用 set_object_style() 修改对象样式做准备.`,
+    parameters: {
+      type: 'object',
+      properties: {
+        type: { type: 'string', description: '对象的类型, 点为 point, 线段为 segment, 圆为 circle 等.' },
+        name: { type: 'string', description: '对象的名称. 对于点一般是大写字母(如 A,H), 线段一般是两个端点的名字合在一起(如 CD) 等.' },
+        hint: { type: 'string', description: '额外的提示信息, 用于区分对象(暂未实现).' },
+      },
+      required: [ 'type', 'name'],
+    }
+  }
+};
+
+// 修改对象的显示性的样式属性 (颜色, 大小/粗细, 样式等)
+const set_object_style: OpenAI.ChatCompletionTool = {
+  type: 'function',
+  function: {
+    name: 'set_object_style',
+    description: '设置对象的显示样式, 如 颜色, 大小, 粗细, 形状, 线型等. ',
+    parameters: {
+      type: 'object',
+      properties: {
+        color: { type: 'string', description: '对象的颜色. 如 "#FF0000", "red", "rgb(255,0,0)" 等标准颜色表示法' },
+        size: { type: 'number', description: '点的大小, 单位为像素. 默认为 3.' },
+        face: { type: 'string', description: '点的形状/外观. 默认为 circle, 及 cross, square, plus, minus, divide, diamond, triangleup 等几种. 如果用户问有哪些外观, 请按照这里的回答.' },
+
+      },
+      required: [],
+    }
+  }
+};
+
 
 /** 导出可用的几何的 function-tool */
 export const GeoTools: OpenAI.ChatCompletionTool[] = [
   get_point_number,
+  query_point_info,
+
   create_point,
   create_midpoint,
   create_glider,
@@ -571,4 +641,6 @@ export const GeoTools: OpenAI.ChatCompletionTool[] = [
   create_rtri_apex,
   create_parallelogram,
 
+  specify_style_adjustee,
+  set_object_style,
 ];
