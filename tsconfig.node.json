@@ -2,6 +2,8 @@
   "compilerOptions": {
     "composite": true,
     "moduleResolution": "bundler",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "types": ["electron-vite/node"]
   },
   "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
@@ -10,5 +12,5 @@
     "src/main/**/*", 
     "src/preload/**/*",
     "src/shared/**/*"
-  ],
+  ]
 }

@@ -1,9 +1,10 @@
 // import Versions from './components/Versions'
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Button } from '@mui/material';
 import { GraphApp } from "./GraphApp";
 import { FabricApp } from "./FabricApp";
+import { A2ATestApp } from "./a2a/A2ATestApp";
 import { ConfigDialog } from './config';
 
 import { configOpenedAtom } from "./store/app-atoms";
@@ -19,7 +20,8 @@ export function App() {
       <div className="flex flex-row">
         <Button variant='contained' onClick={() => setApp('graph')}>Graph 应用</Button>
         &nbsp;
-        <Button variant='contained' onClick={() => setApp('fabric')}>(试题应用)</Button>
+        <Button variant='contained' onClick={() => setApp('a2a')}>A2A应用</Button>
+        {/* <Button variant='contained' onClick={() => setApp('fabric')}>(试题应用)</Button> */}
         &nbsp;
         {/* <Button variant='outlined' onClick={test_memo}>Test Memo</Button> */}
         <Button variant='outlined' onClick={() => { setConfigOpened(true) }}>配置</Button>
@@ -29,6 +31,9 @@ export function App() {
       </div>
       <div style={{ display: app === 'fabric' ? 'block' : 'none' }}>
         {app === 'fabric' ? <FabricApp /> : null }
+      </div>
+      <div style={{ display: app === 'a2a' ? 'block' : 'none' }}>
+        {app === 'a2a' ? <A2ATestApp /> : null }
       </div>
 
       { /* 配置对话框 */ }

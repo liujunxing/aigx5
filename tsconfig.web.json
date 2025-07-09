@@ -23,5 +23,5 @@
     "src/renderer/src/**/*.tsx",
     "src/preload/*.d.ts",
     "src/shared/**/*"
-  ]
+, "_tmp/test2/isotri5.ts", "_tmp/test2/stool4.ts", "_tmp/test2/test_ai.ts"  ]
 }

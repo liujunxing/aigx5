@@ -7,3 +7,8 @@ out
 *.log*
 
 _tmp 
+
+# environment variables 
+.env
+.env.local
+.env.development.local
